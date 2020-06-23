@@ -1,0 +1,32 @@
+#include "DHT.h"
+#define DHTPIN 18       //Ubaciti pin koji se oristi na ESP-ju.
+#define DHTTYPE DHT11
+DHT dht(DHTPIN,DHTTYPE);
+
+void setup() { 
+Serial.begin(115200);
+Serial.println("DHT11 sensor");
+//Call begin to start sensor.
+dht.begin();
+}
+
+void loop() {
+//Use the functions which are supplied by library
+float h = dht.readHumidity ();
+float t = dht.readTemperature();
+//Check if any reads failed and exit early (to try again)
+if (isnan(h) || isnan(t)) { 
+Serial.println("Failed to read from DHT sensor!");
+return;
+}
+
+//Print the result to Terminal
+Serial.print("Humidity: ");
+Serial.print(h);
+Serial.println(" %");
+Serial.print("Temperature: ");
+Serial.print(t);
+Serial.println(" °C");
+//We dalay a little bit for next read
+delay(2000);
+}
